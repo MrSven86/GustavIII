@@ -155,9 +155,53 @@
       color: #444;
       pointer-events: none;
     }
+
+    /* VIDEO INTRO */
+    #intro {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    #intro video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #intro-cta {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #c9a96e;
+      font-family: 'Georgia', serif;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid rgba(201,169,110,0.5);
+      padding: 14px 36px;
+      border-radius: 2px;
+      background: rgba(0,0,0,0.4);
+      animation: pulse 2s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
   </style>
 </head>
 <body>
+
+<!-- VIDEO INTRO -->
+<div id="intro">
+  <video autoplay loop muted playsinline src="https://mrsven.com/Videos/hero1.mp4"></video>
+  <div id="intro-cta">Klicka för att börja</div>
+</div>
 
 <div id="topbar">
   <span id="title-text">Gustav III – Föredrag</span>
@@ -174,6 +218,14 @@
 </div>
 
 <script>
+  // Intro dismiss
+  const intro = document.getElementById('intro');
+  intro.addEventListener('click', () => {
+    intro.style.transition = 'opacity 0.6s ease';
+    intro.style.opacity = '0';
+    setTimeout(() => intro.remove(), 650);
+  });
+
   const total = 36;
   const stage = document.getElementById('stage');
   const thumbstrip = document.getElementById('thumbstrip');
