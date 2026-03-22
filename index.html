@@ -197,9 +197,16 @@
       inset: 0;
       background: #000;
       z-index: 1000;
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+    #outro.active {
+      opacity: 1;
+      pointer-events: auto;
     }
     #outro video {
       width: 100%;
@@ -254,13 +261,9 @@
   const outroVideo = document.getElementById('outro-video');
 
   function showOutro() {
-    outro.style.display = 'flex';
-    outro.style.opacity = '0';
-    outro.style.transition = 'opacity 0.6s ease';
-    outroVideo.play();
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => { outro.style.opacity = '1'; });
-    });
+    outroVideo.load();
+    outroVideo.play().catch(e => console.log('play error:', e));
+    outro.classList.add('active');
   }
 
   const total = 36;
