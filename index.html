@@ -297,12 +297,24 @@
 
   const thumbs = thumbstrip.querySelectorAll('.thumb');
 
+  function hideOutro() {
+    outroVideo.pause();
+    outro.classList.remove('active');
+  }
+
   function goTo(idx) {
+    // Backwards from the outro → back to the last slide
+    if (outro.classList.contains('active')) {
+      if (idx < current) { hideOutro(); goTo(total - 1); }
+      return;
+    }
     // Past last slide → show outro
     if (idx >= total) { showOutro(); return; }
+    // Before first slide → stay on the first
+    if (idx < 0) idx = 0;
     slides[current].classList.remove('active');
     thumbs[current].classList.remove('active');
-    current = (idx + total) % total;
+    current = idx;
     slides[current].classList.add('active');
     thumbs[current].classList.add('active');
     thumbs[current].scrollIntoView({ inline: 'center', behavior: 'smooth' });
@@ -318,6 +330,9 @@
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
   });
+
+  // Click on the outro → back to the last slide
+  outro.addEventListener('click', () => goTo(current - 1));
 
   // Swipe support
   let touchStartX = 0;
